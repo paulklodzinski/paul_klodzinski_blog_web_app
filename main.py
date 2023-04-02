@@ -75,6 +75,7 @@ with app.app_context():
         body = db.Column(db.Text, nullable=False)
         img_url = db.Column(db.String(250), nullable=False)
         parent_post = relationship('Comment', backref='parent_post', lazy=True)
+    db.create_all()
 
 
     class User(UserMixin, db.Model):
@@ -85,7 +86,7 @@ with app.app_context():
         name = db.Column(db.String(100), nullable=False)
         posts = relationship('BlogPost', backref='post_owner', lazy=True)
         comments = relationship('Comment', backref='comment_owner', lazy=True)
-
+    db.create_all()
 
     class Comment(db.Model):
         __tablename__ = "comments"
@@ -93,8 +94,7 @@ with app.app_context():
         author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
         text = db.Column(db.Text, nullable=False)
         blog_post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id'))
-
-    # db.create_all()
+    db.create_all()
 
 
 @app.route('/')
