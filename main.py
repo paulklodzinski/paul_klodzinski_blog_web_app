@@ -65,6 +65,16 @@ def admin_access(func):
 
 ##CONFIGURE TABLES
 with app.app_context():
+    class User(UserMixin, db.Model):
+        __tablename__ = "user"
+        id = db.Column(db.Integer, primary_key=True)
+        email = db.Column(db.String(100), unique=True, nullable=False)
+        password = db.Column(db.String(100), nullable=False)
+        name = db.Column(db.String(100), nullable=False)
+        posts = relationship('BlogPost', backref='post_owner', lazy=True)
+        comments = relationship('Comment', backref='comment_owner', lazy=True)
+    db.create_all()
+
     class BlogPost(db.Model):
         __tablename__ = "blog_posts"
         id = db.Column(db.Integer, primary_key=True)
@@ -75,17 +85,6 @@ with app.app_context():
         body = db.Column(db.Text, nullable=False)
         img_url = db.Column(db.String(250), nullable=False)
         parent_post = relationship('Comment', backref='parent_post', lazy=True)
-    db.create_all()
-
-
-    class User(UserMixin, db.Model):
-        __tablename__ = "user"
-        id = db.Column(db.Integer, primary_key=True)
-        email = db.Column(db.String(100), unique=True, nullable=False)
-        password = db.Column(db.String(100), nullable=False)
-        name = db.Column(db.String(100), nullable=False)
-        posts = relationship('BlogPost', backref='post_owner', lazy=True)
-        comments = relationship('Comment', backref='comment_owner', lazy=True)
     db.create_all()
 
     class Comment(db.Model):
