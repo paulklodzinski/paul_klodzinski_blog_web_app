@@ -90,7 +90,7 @@ with app.app_context():
         text = db.Column(db.Text, nullable=False)
         blog_post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id'))
 
-    db.create_all()
+    # db.create_all()
 
 
 @app.route('/')
